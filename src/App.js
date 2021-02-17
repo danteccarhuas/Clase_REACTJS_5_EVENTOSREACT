@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import Header from './componentes/Header';
 import Formulario from './componentes/Formulario';
+import Eventos from './componentes/Eventos';
 
 class App extends Component {
 
   token = '5YVCT65EX3I22YHEHF73';
+  ordenar = 'date';
 
   state = {
-    categorias: []
+    categorias: [],
+    eventos: []
   }
 
   componentDidMount() {
@@ -29,14 +32,20 @@ class App extends Component {
   }
 
   obtenerEventos = async (busqueda) => {
-    let url = ``;
-
+    let url = `https://www.eventbriteapi.com/v3/series/15241955098/?token=${this.token}`;
+    let arrayEventos = [];
     await fetch(url)
     .then(respuesta =>{
       return respuesta.json();
     })
-    .then();
-    console.log(busqueda);
+    .then(eventos =>{
+      for(var i=0; i<20; i++){
+        arrayEventos.push(eventos)
+      }
+      this.setState({
+        eventos: arrayEventos
+      });
+    });
   }
 
   render() {
@@ -48,6 +57,9 @@ class App extends Component {
           <Formulario 
             categorias = {this.state.categorias}
             obtenerEventos = {this.obtenerEventos}
+          />
+          <Eventos 
+            eventos={this.state.eventos}
           />
         </div>
       </div>
